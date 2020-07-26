@@ -29,7 +29,7 @@ import numpy as np
 
 # Graphviz is optional and only required for visualization.
 try:
-  import graphviz   # pylint: disable=g-import-not-at-top
+    import graphviz	 # pylint: disable=g-import-not-at-top
 except ImportError:
   pass
 
