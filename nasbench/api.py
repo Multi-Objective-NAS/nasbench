@@ -42,9 +42,9 @@ Adjacency matrices are expected to be upper-triangular 0-1 matrices within the
 defined search space (7 vertices, 9 edges, 3 allowed ops). The first and last
 operations must be 'input' and 'output'. The other operations should be from
 config['available_ops']. Currently, the available operations are:
-	CONV3X3 = "conv3x3-bn-relu"
-	CONV1X1 = "conv1x1-bn-relu"
-	MAXPOOL3X3 = "maxpool3x3"
+  CONV3X3 = "conv3x3-bn-relu"
+  CONV1X1 = "conv1x1-bn-relu"
+  MAXPOOL3X3 = "maxpool3x3"
 
 When querying a spec, the spec will first be automatically pruned (removing
 unused vertices and edges along with ops). If the pruned spec is still out of
@@ -123,7 +123,7 @@ class NASBench(object):
 			generated.
 		"""
 		self.config = config.build_config()
-		random.seed(seed)
+			random.seed(seed)
 
 		print('Loading dataset from file... This may take a few minutes...')
 		start = time.time()
@@ -196,9 +196,14 @@ class NASBench(object):
 		elapsed = time.time() - start
 		print('Loaded dataset in %d seconds' % elapsed)
 
+		self.search_space = ['input', 'conv1x1-bn-relu',
+		    'conv3x3-bn-relu', 'maxpool3x3', 'output']
 		self.history = {}
 		self.training_time_spent = 0.0
 		self.total_epochs_spent = 0
+
+	def get_modelspec(self, matrix, ops):
+		return ModelSpec(matrix=matrix, ops=ops)
 
 	def query(self, model_spec, epochs=108, stop_halfway=False):
 		"""Fetch one of the evaluations for this model spec.
@@ -409,7 +414,6 @@ class NASBench(object):
 	def _hash_spec(self, model_spec):
 		"""Returns the MD5 hash for a provided model_spec."""
 		return model_spec.hash_spec(self.config['available_ops'])
-
 
 class _NumpyEncoder(json.JSONEncoder):
 	"""Converts numpy objects to JSON-serializable format."""
