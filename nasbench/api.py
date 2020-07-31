@@ -196,8 +196,7 @@ class NASBench(object):
 		elapsed = time.time() - start
 		print('Loaded dataset in %d seconds' % elapsed)
 
-		self.search_space = ['input', 'conv1x1-bn-relu',
-		    'conv3x3-bn-relu', 'maxpool3x3', 'output']
+		self.search_space = ['conv1x1-bn-relu', 'conv3x3-bn-relu', 'maxpool3x3']
 		self.history = {}
 		self.training_time_spent = 0.0
 		self.total_epochs_spent = 0
