@@ -41,10 +41,10 @@ class ModelSpec(object):
         """Initialize the module spec.
 
         Args:
-  		  matrix: ndarray or nested list with shape [V, V] for the adjacency matrix.
-  		  ops: V-length list of labels for the base ops used. The first and last
-      	    elements are ignored because they are the input and output vertices
-		    which have no operations. The elements are retained to keep consistent
+		  matrix: ndarray or nested list with shape [V, V] for the adjacency matrix.
+		  ops: V-length list of labels for the base ops used. The first and last
+		    elements are ignored because they are the input and output vertices
+			which have no operations. The elements are retained to keep consistent
 			indexing.
 		  data_format: channels_last or channels_first.
 
@@ -80,9 +80,9 @@ class ModelSpec(object):
         """Prune the extraneous parts of the graph.
 
 		General procedure:
-  		  1) Remove parts of graph not connected to input.
-  		  2) Remove parts of graph not connected to output.
-  		  3) Reorder the vertices so that they are consecutive after steps 1 and 2.
+		  1) Remove parts of graph not connected to input.
+		  2) Remove parts of graph not connected to output.
+		  3) Reorder the vertices so that they are consecutive after steps 1 and 2.
 
         These 3 steps can be combined by deleting the rows and columns of the
         vertices that are not reachable from both the input and output (in reverse).
@@ -131,11 +131,11 @@ class ModelSpec(object):
         """Computes the isomorphism-invariant graph hash of this spec.
 
         Args:
-  		  canonical_ops: list of operations in the canonical ordering which they
-    	    were assigned (i.e. the order provided in the config['available_ops']).
+          canonical_ops: list of operations in the canonical ordering which they
+          were assigned (i.e. the order provided in the config['available_ops']).
 
         Returns:
-  		  MD5 hash of this spec which can be used to query the dataset.
+          MD5 hash of this spec which can be used to query the dataset.
         """
         # Invert the operations back to integer label indices used in graph gen.
         labeling = [-1] + [canonical_ops.index(op)
