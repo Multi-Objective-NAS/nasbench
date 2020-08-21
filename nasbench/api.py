@@ -117,10 +117,10 @@ class NASBench(object):
 
         Args:
 		  dataset_file: path to .tfrecord file containing the dataset.
-		  seed: random seed used for sampling queried models. Two NASBench objects
-		  		created with the same seed will return the same data points when queried
-				with the same models in the same order. By default, the seed is randomly
-				generated.
+  		  seed: random seed used for sampling queried models. Two NASBench objects
+			created with the same seed will return the same data points when queried
+			with the same models in the same order. By default, the seed is randomly
+			generated.
         """
         self.config = config.build_config()
         random.seed(seed)
@@ -220,14 +220,14 @@ class NASBench(object):
         point of training using stop_halfway. Using this option will increment the
         budget counters only up to the halfway point.
 
-        Args:
-          model_spec: ModelSpec object.
-          epochs: number of epochs trained. Must be one of the evaluated number of
-                    epochs, [4, 12, 36, 108] for the full dataset.
-          stop_halfway: if True, returned dict will only contain the training time
-		  				and accuracies at the halfway point of training (num_epochs/2).
-                        Otherwise, returns the time and accuracies at the end of training
-                        (num_epochs).
+      Args:
+        model_spec: ModelSpec object.
+        epochs: number of epochs trained. Must be one of the evaluated number of
+          epochs, [4, 12, 36, 108] for the full dataset.
+        stop_halfway: if True, returned dict will only contain the training time
+          and accuracies at the halfway point of training (num_epochs/2).
+          Otherwise, returns the time and accuracies at the end of training
+          (num_epochs).
 
         Returns:
           dict containing the evaluated data for this object.
@@ -284,6 +284,13 @@ class NASBench(object):
             ops=fixed_stat['module_operations'],
         )
         return arch
+
+    def get_modelspec(self, matrix, ops):
+        model_spec = ModelSpec(matrix=matrix, ops=ops)
+        if self.is_valid(model_spec):
+            return model_spec
+        else
+        return false
 
     def is_valid(self, model_spec):
         """Checks the validity of the model_spec.
