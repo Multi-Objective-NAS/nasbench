@@ -66,8 +66,6 @@ class ModelSpec(object):
     # spec.
     self.original_matrix = copy.deepcopy(matrix)
     self.original_ops = copy.deepcopy(ops)
-    self.search_space = ['input', 'conv1x1-bn-relu', 'conv3x3-bn-relu', 'maxpool3x3', 'output']
-
     self.matrix = copy.deepcopy(matrix)
     self.ops = copy.deepcopy(ops)
     self.valid_spec = True

@@ -197,7 +197,6 @@ class NASBench(object):
     elapsed = time.time() - start
     print('Loaded dataset in %d seconds' % elapsed)
 
-    self.search_space = ['conv1x1-bn-relu', 'conv3x3-bn-relu', 'maxpool3x3']
     self.history = {}
     self.training_time_spent = 0.0
     self.total_epochs_spent = 0
@@ -275,20 +274,13 @@ class NASBench(object):
       test_acc = np.mean([cs[108][j]['final_test_accuracy'] for j in range(3)])
       return test_acc
 
-  def get_model_spec_by_hash(self, hash):
-    fixed_stat, computed_stat = self.get_metrics_from_hash(hash)
+  def get_model_spec_by_hash(self, hash_val):
+    fixed_stat, computed_stat = self.get_metrics_from_hash(hash_val)
     arch = ModelSpec(
       matrix=fixed_stat['module_adjacency'],
       ops=fixed_stat['module_operations'],
     )
     return arch
-
-  def get_modelspec(self, matrix, ops):
-    model_spec = ModelSpec(matrix=matrix, ops=ops)
-    if self.is_valid(model_spec):
-      return model_spec
-    else:
-      return false
 
   def is_valid(self, model_spec):
     """Checks the validity of the model_spec.
