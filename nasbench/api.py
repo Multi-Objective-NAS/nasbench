@@ -205,7 +205,7 @@ class NASBench(object):
   def get_modelspec(self, matrix, ops):
     return ModelSpec(matrix=matrix, ops=ops)
 
-  def query(self, model_spec, epochs=108, stop_halfway=False):
+  def _query(self, model_spec, epochs=108, stop_halfway=False):
     """Fetch one of the evaluations for this model spec.
 
     Each call will sample one of the config['num_repeats'] evaluations of the
@@ -266,9 +266,9 @@ class NASBench(object):
 
     return data
 
-  def query_option(self, modelspec, dataset, option):
+  def query(self, modelspec, dataset, option):
     if option == 'valid':
-      data = self.query(modelspec)
+      data = self._query(modelspec)
       return data['validation_accuracy']
     elif option == 'test':
       fs, cs = self.get_metrics_from_spec(modelspec)
