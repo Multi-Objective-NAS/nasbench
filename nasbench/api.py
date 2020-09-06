@@ -197,11 +197,16 @@ class NASBench(object):
     elapsed = time.time() - start
     print('Loaded dataset in %d seconds' % elapsed)
 
+    self.search_space = self.config['available_ops']
     self.history = {}
     self.training_time_spent = 0.0
     self.total_epochs_spent = 0
 
-  def query(self, model_spec, epochs=108, stop_halfway=False):
+  def get_modelspec(self, matrix, ops):
+    """ Added due to nasbench201. Return model spec """
+    return ModelSpec(matrix=matrix, ops=ops)
+
+  def _query(self, model_spec, epochs=108, stop_halfway=False):
     """Fetch one of the evaluations for this model spec.
 
     Each call will sample one of the config['num_repeats'] evaluations of the
@@ -261,6 +266,48 @@ class NASBench(object):
       self.total_epochs_spent += epochs
 
     return data
+
+  def query(self, modelspec, option, dataset='cifar10', epochs=108):
+    """ This method is added added due to nasbench201.
+    * option == 'valid'
+      Fetch one of the evaluations for this model spec.
+      sample one of the config['num_repeats'] evaluations of the model.
+      increment the budget counters for benchmarking purposes.
+      no half way stop
+    * option == 'test'
+      Returns the average metrics of all repeats of this model spec.
+      not be used for benchmarking. so not increment any of the budget counters.
+    
+    Args:
+      model_spec: ModelSpec object.
+      option: 'valid' or 'test'
+      epochs: number of epochs trained. [4, 12, 36, 108] for the full dataset.
+
+    Raises:
+      invalid option
+      OutOfDomainError: if model_spec or num_epochs is outside the search space.
+    """
+    assert option == 'valid' or option == 'test'
+
+    if option == 'valid':
+      data = self._query(modelspec, epochs=epochs)
+      return data['validation_accuracy']
+    elif option == 'test':
+      fs, cs = self.get_metrics_from_spec(modelspec)
+      if epochs not in self.valid_epochs:
+        raise OutOfDomainError('invalid number of epochs, must be one of %s'
+                             % self.valid_epochs)
+      test_acc = np.mean([cs[epochs][j]['final_test_accuracy'] for j in range(3)])
+      return test_acc
+
+  def get_modelspec_by_hash(self, hash_val):
+    """ Added due to nasbench201. Return modelspec by hash value"""
+    fixed_stat, computed_stat = self.get_metrics_from_hash(hash_val)
+    arch = ModelSpec(
+      matrix=fixed_stat['module_adjacency'],
+      ops=fixed_stat['module_operations'],
+    )
+    return arch
 
   def is_valid(self, model_spec):
     """Checks the validity of the model_spec.

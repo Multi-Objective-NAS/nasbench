@@ -66,7 +66,6 @@ class ModelSpec(object):
     # spec.
     self.original_matrix = copy.deepcopy(matrix)
     self.original_ops = copy.deepcopy(ops)
-
     self.matrix = copy.deepcopy(matrix)
     self.ops = copy.deepcopy(ops)
     self.valid_spec = True
