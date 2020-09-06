@@ -197,6 +197,7 @@ class NASBench(object):
     elapsed = time.time() - start
     print('Loaded dataset in %d seconds' % elapsed)
 
+    self.search_space = self.config['available_ops']
     self.history = {}
     self.training_time_spent = 0.0
     self.total_epochs_spent = 0

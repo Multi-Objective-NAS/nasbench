@@ -20,6 +20,7 @@ from __future__ import print_function
 
 from nasbench.lib import model_spec
 import numpy as np
+import unittest
 import tensorflow as tf   # Used only for tf.test
 
 
